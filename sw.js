@@ -1,9 +1,11 @@
 const CACHE_NAME = 'fenixjj-v1';
 
 const FILES = [
-  '/',
-  '/index.html',
-  '/manifest.json'
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
