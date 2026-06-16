@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Fênix Jiu-Jitsu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap');
+
+  :root {
+    --gold: #F5C518;
+    --gold-dark: #C9A000;
+    --gold-light: #FFD740;
+    --black: #000000;
+    --dark: #0A0A0A;
+    --dark2: #111111;
+    --dark3: #1A1A1A;
+    --dark4: #222222;
+    --surface: #181818;
+    --border: #2A2A2A;
+    --text: #F0F0F0;
+    --text-muted: #888888;
+    --red: #CC2200;
+    --green: #22AA55;
+    --orange: #FF8800;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--black);
+    border-bottom: 2px solid var(--gold);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-logo {
+    width: 42px; height: 42px;
+    flex-shrink: 0;
+  }
+  .header-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  .header-title small {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+  }
+  .back-btn {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .back-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── SCREENS ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── HOME ── */
+  .home-hero {
+    background: var(--black);
+    padding: 32px 20px 24px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .home-hero-logo {
+    width: 100px; height: 100px; margin: 0 auto 16px;
+  }
+  .home-hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 34px; font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .home-hero p {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Dashboard stats */
+  .dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px;
+  }
+  .dash-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    text-align: center;
+  }
+  .dash-card .num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 36px; font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .dash-card .label {
+    font-size: 11px; font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+  .dash-card.danger .num { color: var(--red); }
+
+  /* Home menu */
+  .home-menu {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    transition: border-color .15s, background .15s;
+  }
+  .menu-btn:hover, .menu-btn:active { border-color: var(--gold); background: var(--dark3); }
+  .menu-btn .icon {
+    width: 46px; height: 46px;
+    background: var(--dark3);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .menu-btn .text-block .title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 19px; font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+  .menu-btn .text-block .sub {
+    font-size: 13px; color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .menu-btn .arrow { margin-left: auto; color: var(--gold); font-size: 18px; }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 14px 16px 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── FORMS ── */
+  .form-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+  .form-group input,
+  .form-group select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'Barlow', sans-serif;
+    padding: 12px 14px;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus {
+    outline: none; border-color: var(--gold);
+  }
+  .form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+  /* toggle group */
+  .toggle-group { display: flex; gap: 8px; }
+  .toggle-btn {
+    flex: 1; padding: 11px 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    font-family: 'Barlow', sans-serif;
+    text-align: center;
+  }
+  .toggle-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(245,197,24,.08); }
+
+  /* grau dots */
+  .grau-picker { display: flex; gap: 12px; align-items: center; }
+  .grau-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all .15s;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: transparent;
+  }
+  .grau-dot.filled { background: var(--gold); border-color: var(--gold); color: var(--black); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: block; width: 100%;
+    padding: 15px;
+    border: none; border-radius: var(--radius);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px; font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: center;
+  }
+  .btn-primary { background: var(--gold); color: var(--black); }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-danger { background: transparent; border: 1px solid var(--red); color: var(--red); }
+  .btn-danger:hover { background: rgba(204,34,0,.1); }
+  .btn-secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+
+  /* ── STUDENT LIST ── */
+  .list-toolbar {
+    padding: 12px 16px;
+    display: flex; gap: 8px;
+  }
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 15px;
+    font-family: 'Barlow', sans-serif;
+    padding: 10px 14px;
+  }
+  .search-input:focus { outline: none; border-color: var(--gold); }
+  .filter-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text-muted);
+    padding: 0 14px; cursor: pointer; font-size: 13px;
+    font-family: 'Barlow', sans-serif; font-weight: 600;
+    white-space: nowrap;
+  }
+  .filter-btn.active { border-color: var(--gold); color: var(--gold); }
+
+  .student-item {
+    display: flex; align-items: center;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    gap: 12px;
+    transition: background .1s;
+  }
+  .student-item:hover, .student-item:active { background: var(--dark3); }
+  .belt-badge {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800;
+    color: #fff; flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,.15);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    position: relative;
+  }
+  .grau-pips {
+    position: absolute; bottom: -4px;
+    display: flex; gap: 2px;
+  }
+  .grau-pip {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 1px solid var(--black);
+  }
+  .student-info { flex: 1; min-width: 0; }
+  .student-name {
+    font-size: 15px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .student-meta {
+    font-size: 12px; color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .student-badge {
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .badge-late { background: rgba(204,34,0,.2); color: var(--red); border: 1px solid rgba(204,34,0,.3); }
+  .badge-ok { background: rgba(34,170,85,.2); color: var(--green); border: 1px solid rgba(34,170,85,.3); }
+  .badge-kids { background: rgba(245,197,24,.15); color: var(--gold); border: 1px solid rgba(245,197,24,.25); font-size: 9px; }
+
+  /* ── STUDENT DETAIL ── */
+  .student-header {
+    background: var(--black);
+    padding: 24px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .student-header .belt-big {
+    width: 68px; height: 68px;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff;
+    text-transform: uppercase;
+    border: 3px solid rgba(255,255,255,.2);
+    position: relative;
+  }
+  .student-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px; font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .student-header .sub {
+    font-size: 13px; color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .info-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .info-row .lbl { font-size: 13px; color: var(--text-muted); }
+  .info-row .val { font-size: 15px; font-weight: 600; }
+
+  /* freq stats */
+  .freq-block {
+    margin: 16px; padding: 16px;
+    background: var(--surface); border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .freq-bar-bg {
+    height: 8px; background: var(--dark4);
+    border-radius: 4px; margin: 10px 0 8px;
+    overflow: hidden;
+  }
+  .freq-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: var(--gold);
+    transition: width .4s ease;
+  }
+  .freq-bar-fill.low { background: var(--red); }
+  .freq-bar-fill.mid { background: var(--orange); }
+  .freq-numbers {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .freq-pct {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px; font-weight: 800;
+    color: var(--gold);
+    text-align: center;
+    line-height: 1;
+  }
+  .freq-pct.low { color: var(--red); }
+  .freq-pct.mid { color: var(--orange); }
+
+  .filter-pills {
+    display: flex; gap: 8px; overflow-x: auto;
+    padding: 12px 16px 8px;
+    scrollbar-width: none;
+  }
+  .filter-pills::-webkit-scrollbar { display: none; }
+  .pill {
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 12px; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+    font-family: 'Barlow', sans-serif;
+  }
+  .pill.active { border-color: var(--gold); color: var(--gold); background: rgba(245,197,24,.1); }
+
+  /* action row */
+  .action-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; padding: 16px;
+  }
+
+  /* ── CALENDAR ── */
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px;
+  }
+  .cal-header h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 700;
+    text-transform: capitalize;
+  }
+  .cal-nav {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text);
+    width: 34px; height: 34px;
+    cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cal-nav:hover { border-color: var(--gold); }
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7,1fr);
+    gap: 2px; padding: 0 12px 12px;
+  }
+  .cal-dow {
+    text-align: center; font-size: 10px; font-weight: 700;
+    color: var(--text-muted); padding: 6px 0;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .cal-day {
+    aspect-ratio: 1; border-radius: 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; font-size: 14px; font-weight: 600;
+    position: relative; border: 1px solid transparent;
+    transition: background .1s, border-color .1s;
+  }
+  .cal-day.empty { pointer-events: none; }
+  .cal-day.today { border-color: var(--gold); color: var(--gold); }
+  .cal-day.future { color: var(--dark4); pointer-events: none; }
+  .cal-day:not(.future):not(.empty):hover { background: var(--dark3); border-color: var(--border); }
+  .cal-day.has-class::after {
+    content: '';
+    position: absolute; bottom: 3px;
+    width: 4px; height: 4px;
+    border-radius: 50%; background: var(--gold);
+  }
+  .cal-day.has-presence { background: rgba(245,197,24,.15); }
+  .cal-day.partial { background: rgba(245,197,24,.07); }
+
+  /* class list in calendar modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.85);
+    z-index: 200;
+    display: flex; align-items: flex-end;
+    padding: 0;
+    display: none;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-sheet {
+    background: var(--dark2);
+    border-radius: 16px 16px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    width: 100%; max-width: 480px;
+    margin: 0 auto;
+    padding: 0 0 30px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  .modal-handle {
+    width: 36px; height: 4px;
+    background: var(--border); border-radius: 2px;
+    margin: 12px auto 16px;
+  }
+  .modal-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px; font-weight: 700;
+    padding: 0 16px 12px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .class-attendance-item {
+    display: flex; align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .class-time {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--gold); min-width: 56px;
+  }
+  .class-turma {
+    font-size: 12px; font-weight: 600;
+    color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: .5px; flex: 1;
+  }
+  .check-toggle {
+    width: 44px; height: 26px;
+    border-radius: 13px;
+    background: var(--dark4);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    position: relative; transition: background .2s;
+    flex-shrink: 0;
+  }
+  .check-toggle::after {
+    content: '';
+    position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    border-radius: 50%; background: var(--text-muted);
+    transition: left .2s, background .2s;
+  }
+  .check-toggle.on { background: rgba(245,197,24,.2); border-color: var(--gold); }
+  .check-toggle.on::after { left: 21px; background: var(--gold); }
+
+  /* ── AULAS SCREEN ── */
+  .aula-item {
+    display: flex; align-items: center;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+  .aula-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0;
+  }
+  .aula-dot.kids { background: #58C4E0; }
+  .aula-info { flex: 1; min-width: 0; }
+  .aula-time {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 700; color: var(--gold);
+  }
+  .aula-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .aula-chamada-btn {
+    background: rgba(245,197,24,.12);
+    border: 1px solid rgba(245,197,24,.4);
+    color: var(--gold);
+    border-radius: 8px;
+    padding: 7px 11px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .5px; text-transform: uppercase;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    transition: background .15s;
+  }
+  .aula-chamada-btn:hover { background: rgba(245,197,24,.22); }
+  .aula-delete {
+    background: none; border: none;
+    color: var(--red); font-size: 18px; cursor: pointer;
+    padding: 4px 8px; flex-shrink: 0;
+  }
+
+  /* ── CHAMADA MODAL ── */
+  .chamada-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--dark3);
+  }
+  .chamada-bar-count { font-size: 13px; color: var(--text-muted); }
+  .chamada-bar-count strong { color: var(--gold); font-size: 15px; }
+  .chamada-marcar-todos {
+    background: none; border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text-muted);
+    padding: 6px 12px; font-size: 12px; font-weight: 600;
+    cursor: pointer; font-family: 'Barlow', sans-serif;
+    white-space: nowrap;
+  }
+  .chamada-marcar-todos:hover { border-color: var(--gold); color: var(--gold); }
+  .chamada-aluno-row {
+    display: flex; align-items: center;
+    padding: 12px 16px; gap: 12px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background .1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .chamada-aluno-row:hover { background: var(--dark3); }
+  .chamada-aluno-row.presente { background: rgba(245,197,24,.05); }
+  .chamada-belt {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; color: #fff;
+    border: 2px solid rgba(255,255,255,.15);
+    flex-shrink: 0; text-transform: uppercase;
+  }
+  .chamada-aluno-info { flex: 1; min-width: 0; }
+  .chamada-aluno-nome {
+    font-size: 15px; font-weight: 600;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .chamada-aluno-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+  /* toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: var(--dark3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 18px;
+    font-size: 14px; font-weight: 600;
+    color: var(--gold);
+    z-index: 300; transition: transform .3s, opacity .3s;
+    opacity: 0; pointer-events: none; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* faixa colors */
+  .belt-branca { background: #CCC; }
+  .belt-cinza { background: #777; }
+  .belt-amarela { background: #D4A017; }
+  .belt-laranja { background: #E07020; }
+  .belt-verde { background: #2A8A3E; }
+  .belt-azul { background: #1A4FAA; }
+  .belt-roxa { background: #6A2890; }
+  .belt-marrom { background: #6B3A2A; }
+  .belt-preta { background: #1A1A1A; border-color: #555 !important; }
+  .belt-vermelha { background: #CC2200; }
+  .belt-coral { background: #E05828; }
+
+  .empty-state {
+    text-align: center; padding: 40px 20px;
+    color: var(--text-muted); font-size: 14px;
+  }
+  .empty-state .icon { font-size: 40px; margin-bottom: 10px; }
+  .empty-state .msg { font-weight: 600; }
+  .empty-state .sub { font-size: 12px; margin-top: 6px; }
+
+  .notice {
+    margin: 16px; padding: 12px 14px;
+    background: rgba(245,197,24,.08);
+    border: 1px solid rgba(245,197,24,.2);
+    border-radius: var(--radius);
+    font-size: 13px; color: var(--text-muted);
+  }
+
+  /* inline calendar for aulas */
+  .inline-cal {
+    padding: 0 12px 8px;
+  }
+  .selected-date-label {
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .cal-day.selected-aula {
+    background: var(--gold) !important;
+    color: var(--black) !important;
+    border-color: var(--gold) !important;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-title" id="headerTitle">
+    Fênix Jiu-Jitsu
+    <small>Sistema de Gestão</small>
+  </div>
+  <button class="back-btn" id="backBtn" style="display:none" onclick="goBack()">← Voltar</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-sheet" id="modalSheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ══ SCREEN: HOME ══ -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <h1>Fênix Jiu-Jitsu</h1>
+    <p>Painel do Sensei</p>
+  </div>
+  <div class="dash-grid" id="dashGrid"></div>
+  <div class="section-title">Menu Principal</div>
+  <div class="home-menu">
+    <button class="menu-btn" onclick="showScreen('aulas')">
+      <div class="icon">📅</div>
+      <div class="text-block">
+        <div class="title">Cadastrar Aula</div>
+        <div class="sub">Registrar aulas por data e turma</div>
+      </div>
+      <span class="arrow">›</span>
+    </button>
+    <button class="menu-btn" onclick="showScreen('alunos')">
+      <div class="icon">🥋</div>
+      <div class="text-block">
+        <div class="title">Gerenciar Alunos</div>
+        <div class="sub">Cadastro, presença e frequência</div>
+      </div>
+      <span class="arrow">›</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══ SCREEN: AULAS ══ -->
+<div class="screen" id="screen-aulas">
+  <div class="section-title">Selecionar Data</div>
+  <div class="cal-header">
+    <button class="cal-nav" onclick="aulasCalPrev()">‹</button>
+    <h3 id="aulasCalTitle"></h3>
+    <button class="cal-nav" onclick="aulasCalNext()">›</button>
+  </div>
+  <div class="inline-cal">
+    <div class="cal-grid" id="aulasCalGrid"></div>
+  </div>
+  <div class="selected-date-label" id="aulasSelectedLabel">Selecione uma data no calendário</div>
+  <div id="aulasDateSection" style="display:none">
+    <div class="section-title" id="aulasDateTitle">Aulas do Dia</div>
+    <div id="aulasList"></div>
+    <div class="form-body">
+      <div class="form-group">
+        <label>Horário</label>
+        <input type="time" id="aulaHorario" value="18:00">
+      </div>
+      <div class="form-group">
+        <label>Turma</label>
+        <div class="toggle-group">
+          <button class="toggle-btn active" id="aulaTurmaAdulto" onclick="setAulaTurma('Adulto')">Adulto</button>
+          <button class="toggle-btn" id="aulaTurmaKids" onclick="setAulaTurma('Kids')">Kids</button>
+          <button class="toggle-btn" id="aulaTurmaMista" onclick="setAulaTurma('Mista')">Mista</button>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="cadastrarAula()">+ Adicionar Aula</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN: ALUNOS ══ -->
+<div class="screen" id="screen-alunos">
+  <div class="list-toolbar">
+    <input class="search-input" type="text" placeholder="Buscar aluno…" id="searchInput" oninput="renderAlunos()">
+    <button class="filter-btn active" id="filterTodos" onclick="setFilter('todos')">Todos</button>
+    <button class="filter-btn" id="filterAdulto" onclick="setFilter('Adulto')">Adulto</button>
+    <button class="filter-btn" id="filterKids" onclick="setFilter('Kids')">Kids</button>
+  </div>
+  <div id="alunosList"></div>
+  <div style="padding:16px;border-top:1px solid var(--border)">
+    <button class="btn btn-primary" onclick="showScreen('aluno-form')">+ Cadastrar Aluno</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN: ALUNO FORM ══ -->
+<div class="screen" id="screen-aluno-form">
+  <div class="form-body">
+    <div class="form-group">
+      <label>Nome Completo</label>
+      <input type="text" id="alunoNome" placeholder="Nome do aluno">
+    </div>
+    <div class="form-group">
+      <label>Turma</label>
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="turmaAdultoBtn" onclick="setTurma('Adulto')">Adulto</button>
+        <button class="toggle-btn" id="turmaKidsBtn" onclick="setTurma('Kids')">Kids</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Faixa</label>
+      <select id="alunoFaixa">
+        <option value="branca">Branca</option>
+        <option value="cinza">Cinza</option>
+        <option value="amarela">Amarela</option>
+        <option value="laranja">Laranja</option>
+        <option value="verde">Verde</option>
+        <option value="azul">Azul</option>
+        <option value="roxa">Roxa</option>
+        <option value="marrom">Marrom</option>
+        <option value="preta">Preta</option>
+        <option value="vermelha">Vermelha</option>
+        <option value="coral">Coral/Vermelha</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Graus (0–4)</label>
+      <div class="grau-picker" id="grauPicker">
+        <div class="grau-dot" onclick="setGrau(1)"></div>
+        <div class="grau-dot" onclick="setGrau(2)"></div>
+        <div class="grau-dot" onclick="setGrau(3)"></div>
+        <div class="grau-dot" onclick="setGrau(4)"></div>
+        <span style="font-size:12px;color:var(--text-muted);margin-left:4px" id="grauLabel">0 graus</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Mensalidade</label>
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="mensalidadeOkBtn" onclick="setMensalidade(true)">Em Dia ✓</button>
+        <button class="toggle-btn" id="mensalidadeAtrasoBtn" onclick="setMensalidade(false)">Atrasada !</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="saveAlunoBtn" onclick="saveAluno()">Salvar Aluno</button>
+    <button class="btn btn-danger" id="deleteAlunoBtn" style="display:none" onclick="deleteAluno()">Excluir Aluno</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN: ALUNO DETAIL ══ -->
+<div class="screen" id="screen-aluno-detail">
+  <div class="student-header" id="detailHeader"></div>
+  <div id="detailInfo"></div>
+  <div class="filter-pills" id="freqPills"></div>
+  <div class="freq-block" id="freqBlock"></div>
+  <div class="section-title">Controle de Presença</div>
+  <div class="cal-header">
+    <button class="cal-nav" onclick="presencaCalPrev()">‹</button>
+    <h3 id="presencaCalTitle"></h3>
+    <button class="cal-nav" onclick="presencaCalNext()">›</button>
+  </div>
+  <div class="cal-grid" id="presencaCalGrid" style="padding:0 12px 16px"></div>
+  <div class="action-row">
+    <button class="btn btn-secondary" onclick="showScreen('aluno-form', currentAlunoId)">✏️ Editar</button>
+    <button class="btn btn-secondary" onclick="showScreen('alunos')">← Voltar</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA LAYER — IndexedDB
+// ══════════════════════════════════════════
+let db;
+const DB_NAME = 'fenix_jj', DB_VER = 1;
+
+function initDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('alunos')) d.createObjectStore('alunos', {keyPath:'id',autoIncrement:true});
+      if (!d.objectStoreNames.contains('aulas')) d.createObjectStore('aulas', {keyPath:'id',autoIncrement:true});
+      if (!d.objectStoreNames.contains('presencas')) d.createObjectStore('presencas', {keyPath:'id',autoIncrement:true});
+    };
+    req.onsuccess = e => { db = e.target.result; res(); };
+    req.onerror = rej;
+  });
+}
+
+function dbGetAll(store) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).getAll();
+    req.onsuccess = () => res(req.result);
+    req.onerror = rej;
+  });
+}
+function dbAdd(store, obj) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).add(obj);
+    req.onsuccess = () => res(req.result);
+    req.onerror = rej;
+  });
+}
+function dbPut(store, obj) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).put(obj);
+    req.onsuccess = () => res(req.result);
+    req.onerror = rej;
+  });
+}
+function dbDelete(store, id) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).delete(id);
+    req.onsuccess = () => res();
+    req.onerror = rej;
+  });
+}
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let alunos = [], aulas = [], presencas = [];
+let currentAlunoId = null;
+let alunoFormId = null;
+
+// form state
+let formTurma = 'Adulto', formGrau = 0, formMensalidade = true;
+
+// calendar states
+let aulasCalDate = new Date();
+let aulasSelectedDate = null;
+let aulaTurma = 'Adulto';
+
+let presencaCalDate = new Date();
+let freqFilter = 'mes';
+
+const SCREEN_HISTORY = [];
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function showScreen(name, param) {
+  const current = document.querySelector('.screen.active');
+  if (current) {
+    SCREEN_HISTORY.push(current.id.replace('screen-', ''));
+    current.classList.remove('active');
+  }
+  document.getElementById('screen-' + name).classList.add('active');
+  document.getElementById('backBtn').style.display = SCREEN_HISTORY.length ? '' : 'none';
+
+  if (name === 'home') renderDash();
+  if (name === 'alunos') { renderAlunos(); }
+  if (name === 'aluno-form') openAlunoForm(param);
+  if (name === 'aluno-detail') openAlunoDetail(param);
+  if (name === 'aulas') renderAulasCal();
+}
+
+function goBack() {
+  const prev = SCREEN_HISTORY.pop();
+  if (!prev) return;
+  document.querySelector('.screen.active').classList.remove('active');
+  document.getElementById('screen-' + prev).classList.add('active');
+  document.getElementById('backBtn').style.display = SCREEN_HISTORY.length ? '' : 'none';
+  if (prev === 'home') renderDash();
+  if (prev === 'alunos') renderAlunos();
+  if (prev === 'aluno-detail' && currentAlunoId) openAlunoDetail(currentAlunoId);
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ══════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════
+function renderDash() {
+  const total = alunos.length;
+  const kids = alunos.filter(a => a.turma === 'Kids').length;
+  const adulto = alunos.filter(a => a.turma === 'Adulto').length;
+  const atrasados = alunos.filter(a => !a.mensalidade_em_dia).length;
+  document.getElementById('dashGrid').innerHTML = `
+    <div class="dash-card"><div class="num">${total}</div><div class="label">Total Alunos</div></div>
+    <div class="dash-card"><div class="num">${adulto}</div><div class="label">Adulto</div></div>
+    <div class="dash-card"><div class="num">${kids}</div><div class="label">Kids</div></div>
+    <div class="dash-card danger"><div class="num">${atrasados}</div><div class="label">Mensalidade Atrasada</div></div>
+  `;
+}
+
+// ══════════════════════════════════════════
+// BELT HELPERS
+// ══════════════════════════════════════════
+const BELT_ABBR = {branca:'BR',cinza:'CZ',amarela:'AM',laranja:'LR',verde:'VD',azul:'AZ',roxa:'RX',marrom:'MA',preta:'PT',vermelha:'VM',coral:'CR'};
+const BELT_NAME = {branca:'Branca',cinza:'Cinza',amarela:'Amarela',laranja:'Laranja',verde:'Verde',azul:'Azul',roxa:'Roxa',marrom:'Marrom',preta:'Preta',vermelha:'Vermelha',coral:'Coral'};
+
+function beltBadge(faixa, graus, size='sm') {
+  const cls = size === 'lg' ? 'belt-big' : 'belt-badge';
+  const pipSize = size === 'lg' ? 7 : 5;
+  const pips = graus > 0 ? `<div class="grau-pips">${'<div class="grau-pip" style="width:${pipSize}px;height:${pipSize}px"></div>'.repeat(graus)}</div>` : '';
+  return `<div class="${cls} belt-${faixa}">${BELT_ABBR[faixa]||'??'}${pips}</div>`;
+}
+
+// ══════════════════════════════════════════
+// ALUNOS LIST
+// ══════════════════════════════════════════
+let currentFilter = 'todos';
+function setFilter(f) {
+  currentFilter = f;
+  ['todos','Adulto','Kids'].forEach(x => {
+    const id = 'filter'+{todos:'Todos',Adulto:'Adulto',Kids:'Kids'}[x];
+    document.getElementById(id)?.classList.toggle('active', x === f);
+  });
+  renderAlunos();
+}
+
+function renderAlunos() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  let list = [...alunos];
+  if (currentFilter !== 'todos') list = list.filter(a => a.turma === currentFilter);
+  if (q) list = list.filter(a => a.nome.toLowerCase().includes(q));
+  list.sort((a,b) => a.nome.localeCompare(b.nome));
+
+  const el = document.getElementById('alunosList');
+  if (!list.length) {
+    el.innerHTML = `<div class="empty-state"><div class="icon">🥋</div><div class="msg">Nenhum aluno encontrado</div><div class="sub">Toque em + para cadastrar</div></div>`;
+    return;
+  }
+  el.innerHTML = list.map(a => `
+    <div class="student-item" onclick="showScreen('aluno-detail',${a.id})">
+      ${beltBadge(a.faixa_cor, a.graus)}
+      <div class="student-info">
+        <div class="student-name">${a.nome}</div>
+        <div class="student-meta">${BELT_NAME[a.faixa_cor]||a.faixa_cor}${a.graus?` · ${a.graus}°`:''} · ${a.turma}</div>
+      </div>
+      ${a.turma==='Kids'?'<span class="student-badge badge-kids">KIDS</span>':''}
+      <span class="student-badge ${a.mensalidade_em_dia?'badge-ok':'badge-late'}">${a.mensalidade_em_dia?'Em Dia':'Atrasada'}</span>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+// ALUNO FORM
+// ══════════════════════════════════════════
+function setTurma(t) {
+  formTurma = t;
+  document.getElementById('turmaAdultoBtn').classList.toggle('active', t==='Adulto');
+  document.getElementById('turmaKidsBtn').classList.toggle('active', t==='Kids');
+}
+function setGrau(n) {
+  formGrau = formGrau === n ? n-1 : n;
+  // toggle: clicking filled last dot resets
+  if (formGrau < 0) formGrau = 0;
+  document.querySelectorAll('.grau-dot').forEach((d,i) => d.classList.toggle('filled', i < formGrau));
+  document.getElementById('grauLabel').textContent = formGrau + ' grau' + (formGrau!==1?'s':'');
+}
+function setMensalidade(v) {
+  formMensalidade = v;
+  document.getElementById('mensalidadeOkBtn').classList.toggle('active', v);
+  document.getElementById('mensalidadeAtrasoBtn').classList.toggle('active', !v);
+}
+
+function openAlunoForm(id) {
+  alunoFormId = id || null;
+  formTurma = 'Adulto'; formGrau = 0; formMensalidade = true;
+  document.getElementById('alunoNome').value = '';
+  document.getElementById('alunoFaixa').value = 'branca';
+  setTurma('Adulto'); setGrau(0); setMensalidade(true);
+  document.getElementById('deleteAlunoBtn').style.display = 'none';
+  document.getElementById('saveAlunoBtn').textContent = 'Salvar Aluno';
+
+  if (id) {
+    const a = alunos.find(x => x.id === id);
+    if (!a) return;
+    document.getElementById('alunoNome').value = a.nome;
+    document.getElementById('alunoFaixa').value = a.faixa_cor;
+    formTurma = a.turma; setTurma(a.turma);
+    formGrau = 0;
+    document.querySelectorAll('.grau-dot').forEach((d,i) => {
+      d.classList.toggle('filled', i < a.graus);
+    });
+    formGrau = a.graus;
+    document.getElementById('grauLabel').textContent = a.graus + ' grau' + (a.graus!==1?'s':'');
+    setMensalidade(a.mensalidade_em_dia);
+    document.getElementById('deleteAlunoBtn').style.display = '';
+    document.getElementById('saveAlunoBtn').textContent = 'Atualizar Aluno';
+  }
+}
+
+async function saveAluno() {
+  const nome = document.getElementById('alunoNome').value.trim();
+  if (!nome) { showToast('⚠️ Informe o nome do aluno'); return; }
+  const obj = {
+    nome, turma: formTurma,
+    faixa_cor: document.getElementById('alunoFaixa').value,
+    graus: formGrau,
+    mensalidade_em_dia: formMensalidade
+  };
+  if (alunoFormId) {
+    obj.id = alunoFormId;
+    await dbPut('alunos', obj);
+    alunos = alunos.map(a => a.id === alunoFormId ? obj : a);
+    showToast('✓ Aluno atualizado');
+  } else {
+    const id = await dbAdd('alunos', obj);
+    obj.id = id;
+    alunos.push(obj);
+    showToast('✓ Aluno cadastrado');
+  }
+  goBack();
+}
+
+async function deleteAluno() {
+  if (!alunoFormId) return;
+  if (!confirm('Excluir este aluno e todas as presenças?')) return;
+  await dbDelete('alunos', alunoFormId);
+  // remove presences
+  const toDelete = presencas.filter(p => p.aluno_id === alunoFormId);
+  for (const p of toDelete) await dbDelete('presencas', p.id);
+  presencas = presencas.filter(p => p.aluno_id !== alunoFormId);
+  alunos = alunos.filter(a => a.id !== alunoFormId);
+  showToast('Aluno excluído');
+  SCREEN_HISTORY.length = 0;
+  showScreen('alunos');
+}
+
+// ══════════════════════════════════════════
+// ALUNO DETAIL
+// ══════════════════════════════════════════
+const FREQ_FILTERS = [
+  {key:'semana', label:'Última Semana'},
+  {key:'quinzena', label:'Quinzena'},
+  {key:'mes', label:'Mês'},
+  {key:'trimestre', label:'Trimestre'},
+  {key:'semestre', label:'Semestre'},
+];
+
+function openAlunoDetail(id) {
+  currentAlunoId = id;
+  presencaCalDate = new Date();
+  freqFilter = 'mes';
+  renderAlunoDetail();
+}
+
+function renderAlunoDetail() {
+  const a = alunos.find(x => x.id === currentAlunoId);
+  if (!a) return;
+
+  // header
+  document.getElementById('detailHeader').innerHTML = `
+    ${beltBadge(a.faixa_cor, a.graus, 'lg')}
+    <h2>${a.nome}</h2>
+    <div class="sub">${BELT_NAME[a.faixa_cor]||a.faixa_cor}${a.graus?` · ${a.graus}°`:''} · ${a.turma}</div>
+  `;
+
+  document.getElementById('detailInfo').innerHTML = `
+    <div class="info-row">
+      <span class="lbl">Turma</span>
+      <span class="val">${a.turma}</span>
+    </div>
+    <div class="info-row">
+      <span class="lbl">Mensalidade</span>
+      <span class="val" style="color:${a.mensalidade_em_dia?'var(--green)':'var(--red)'}">${a.mensalidade_em_dia?'Em Dia ✓':'Atrasada ⚠️'}</span>
+    </div>
+  `;
+
+  // freq pills
+  document.getElementById('freqPills').innerHTML = FREQ_FILTERS.map(f =>
+    `<div class="pill${freqFilter===f.key?' active':''}" onclick="setFreqFilter('${f.key}')">${f.label}</div>`
+  ).join('');
+
+  renderFreq(a);
+  renderPresencaCal();
+}
+
+function setFreqFilter(f) { freqFilter = f; renderAlunoDetail(); }
+
+function getDateRange(filter) {
+  const now = new Date();
+  const end = new Date(now); end.setHours(23,59,59,999);
+  const start = new Date(now);
+  if (filter === 'semana') start.setDate(now.getDate() - 6);
+  else if (filter === 'quinzena') start.setDate(now.getDate() - 13);
+  else if (filter === 'mes') start.setDate(now.getDate() - 29);
+  else if (filter === 'trimestre') start.setDate(now.getDate() - 89);
+  else if (filter === 'semestre') start.setDate(now.getDate() - 179);
+  start.setHours(0,0,0,0);
+  return {start, end};
+}
+
+function renderFreq(a) {
+  const {start, end} = getDateRange(freqFilter);
+  const aulasFiltered = aulas.filter(au => {
+    const d = new Date(au.data + 'T00:00:00');
+    return au.turma === a.turma && d >= start && d <= end;
+  });
+  const total = aulasFiltered.length;
+  const aula_ids = new Set(aulasFiltered.map(au => au.id));
+  const presente = presencas.filter(p => p.aluno_id === a.id && p.presente && aula_ids.has(p.aula_id)).length;
+  const pct = total > 0 ? Math.round(presente/total*100) : 0;
+  const cls = pct >= 75 ? '' : pct >= 50 ? 'mid' : 'low';
+
+  document.getElementById('freqBlock').innerHTML = `
+    <div class="freq-pct ${cls}">${pct}%</div>
+    <div class="freq-bar-bg"><div class="freq-bar-fill ${cls}" style="width:${pct}%"></div></div>
+    <div class="freq-numbers">
+      <span>${presente} presenças</span>
+      <span>${total} aulas totais</span>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════
+// PRESENÇA CALENDAR
+// ══════════════════════════════════════════
+function presencaCalPrev() { presencaCalDate.setMonth(presencaCalDate.getMonth()-1); renderPresencaCal(); }
+function presencaCalNext() {
+  const next = new Date(presencaCalDate);
+  next.setMonth(next.getMonth()+1);
+  const now = new Date();
+  if (next.getFullYear() > now.getFullYear() || (next.getFullYear()===now.getFullYear()&&next.getMonth()>now.getMonth())) return;
+  presencaCalDate.setMonth(presencaCalDate.getMonth()+1);
+  renderPresencaCal();
+}
+
+function renderPresencaCal() {
+  const a = alunos.find(x => x.id === currentAlunoId);
+  if (!a) return;
+  const year = presencaCalDate.getFullYear(), month = presencaCalDate.getMonth();
+  const now = new Date();
+  document.getElementById('presencaCalTitle').textContent =
+    new Date(year, month, 1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+
+  const first = new Date(year, month, 1).getDay();
+  const days = new Date(year, month+1, 0).getDate();
+  const todayStr = toDateStr(now);
+
+  // get aulas for this month and aluno's turma
+  const monthAulas = aulas.filter(au => {
+    const [y,m] = au.data.split('-').map(Number);
+    return y===year && m-1===month && au.turma===a.turma;
+  });
+  const aulasPerDay = {};
+  monthAulas.forEach(au => {
+    if (!aulasPerDay[au.data]) aulasPerDay[au.data] = [];
+    aulasPerDay[au.data].push(au);
+  });
+
+  // get presences
+  const aula_ids = new Set(monthAulas.map(au => au.id));
+  const presentIds = new Set(presencas.filter(p => p.aluno_id === a.id && p.presente && aula_ids.has(p.aula_id)).map(p => p.aula_id));
+
+  const DAYS = ['D','S','T','Q','Q','S','S'];
+  let html = DAYS.map(d => `<div class="cal-dow">${d}</div>`).join('');
+  for (let i=0;i<first;i++) html += '<div class="cal-day empty"></div>';
+
+  for (let d=1;d<=days;d++) {
+    const ds = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const date = new Date(year,month,d);
+    const isFuture = date > now && ds !== todayStr;
+    const hasClass = !!aulasPerDay[ds];
+    const dayAulas = aulasPerDay[ds] || [];
+    const presentCount = dayAulas.filter(au => presentIds.has(au.id)).length;
+    const isToday = ds === todayStr;
+    const hasAll = dayAulas.length > 0 && presentCount === dayAulas.length;
+    const hasPartial = dayAulas.length > 0 && presentCount > 0 && !hasAll;
+
+    let cls = 'cal-day';
+    if (isFuture) cls += ' future';
+    else if (isToday) cls += ' today';
+    if (hasClass) cls += ' has-class';
+    if (hasAll) cls += ' has-presence';
+    else if (hasPartial) cls += ' partial';
+
+    html += `<div class="${cls}" onclick="openPresencaDay('${ds}')">${d}</div>`;
+  }
+  document.getElementById('presencaCalGrid').innerHTML = html;
+}
+
+function openPresencaDay(dateStr) {
+  const a = alunos.find(x => x.id === currentAlunoId);
+  if (!a) return;
+  const now = new Date(); now.setHours(23,59,59,999);
+  const clickedDate = new Date(dateStr + 'T00:00:00');
+  if (clickedDate > now) return;
+
+  const dayAulas = aulas.filter(au => au.data === dateStr && au.turma === a.turma);
+  if (!dayAulas.length) {
+    showToast('Nenhuma aula cadastrada nesta data');
+    return;
+  }
+  const [y,m,d] = dateStr.split('-');
+  const label = new Date(y,m-1,d).toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+
+  document.getElementById('modalTitle').textContent = label;
+  document.getElementById('modalBody').innerHTML = dayAulas.map(au => {
+    const p = presencas.find(p => p.aluno_id === a.id && p.aula_id === au.id);
+    const present = p ? p.presente : false;
+    return `<div class="class-attendance-item">
+      <div class="class-time">${au.horario}</div>
+      <div class="class-turma">${au.turma}</div>
+      <div class="check-toggle${present?' on':''}" id="toggle_${au.id}" onclick="togglePresenca(${au.id},${a.id},this)"></div>
+    </div>`;
+  }).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+async function togglePresenca(aulaId, alunoId, el) {
+  const current = el.classList.contains('on');
+  const newVal = !current;
+  el.classList.toggle('on', newVal);
+  const existing = presencas.find(p => p.aluno_id === alunoId && p.aula_id === aulaId);
+  if (existing) {
+    existing.presente = newVal;
+    await dbPut('presencas', existing);
+  } else {
+    const id = await dbAdd('presencas', {aluno_id: alunoId, aula_id: aulaId, presente: newVal});
+    presencas.push({id, aluno_id: alunoId, aula_id: aulaId, presente: newVal});
+  }
+  renderPresencaCal();
+  renderFreq(alunos.find(a => a.id === alunoId));
+  showToast(newVal ? '✓ Presença registrada' : 'Presença removida');
+}
+
+// ══════════════════════════════════════════
+// CHAMADA POR AULA
+// ══════════════════════════════════════════
+const BELT_NAME_MAP = {branca:'Branca',cinza:'Cinza',amarela:'Amarela',laranja:'Laranja',verde:'Verde',azul:'Azul',roxa:'Roxa',marrom:'Marrom',preta:'Preta',vermelha:'Vermelha',coral:'Coral'};
+
+function abrirChamada(aulaId) {
+  const aula = aulas.find(au => au.id === aulaId);
+  if (!aula) return;
+  const [y,m,d] = aula.data.split('-');
+  const dataLabel = new Date(y,m-1,d).toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('modalTitle').textContent = `${aula.horario} · ${aula.turma}`;
+  document.getElementById('modalBody').innerHTML =
+    `<div style="font-size:12px;color:var(--text-muted);padding:4px 16px 12px;text-transform:capitalize">${dataLabel}</div>
+     <div id="chamadaContent"></div>`;
+  renderChamadaModal(aulaId);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function renderChamadaModal(aulaId) {
+  const aula = aulas.find(au => au.id === aulaId);
+  if (!aula) return;
+  const turmaAlunos = (aula.turma === 'Mista' ? alunos : alunos.filter(a => a.turma === aula.turma))
+    .sort((a,b) => a.nome.localeCompare(b.nome));
+  const container = document.getElementById('chamadaContent');
+
+  if (!turmaAlunos.length) {
+    container.innerHTML = `<div class="empty-state" style="padding:30px 20px"><div class="icon">🥋</div><div class="msg">Nenhum aluno nesta turma</div><div class="sub">Cadastre alunos em Gerenciar Alunos</div></div>`;
+    return;
+  }
+
+  const presenteSet = new Set(
+    presencas.filter(p => p.aula_id === aulaId && p.presente).map(p => p.aluno_id)
+  );
+  const countPresentes = presenteSet.size;
+  const todosPresentes = countPresentes === turmaAlunos.length;
+
+  // For Mista, group by turma for visual clarity
+  const renderRow = (a) => {
+    const presente = presenteSet.has(a.id);
+    return `<div class="chamada-aluno-row${presente?' presente':''}" onclick="toggleChamada(${aulaId}, ${a.id})">
+      <div class="chamada-belt belt-${a.faixa_cor}">${(a.faixa_cor||'').substring(0,2).toUpperCase()}</div>
+      <div class="chamada-aluno-info">
+        <div class="chamada-aluno-nome">${a.nome}</div>
+        <div class="chamada-aluno-sub">${BELT_NAME_MAP[a.faixa_cor]||a.faixa_cor}${a.graus?` · ${a.graus}°`:''} · ${a.turma}</div>
+      </div>
+      <div class="check-toggle${presente?' on':''}" id="ctoggle_${aulaId}_${a.id}"></div>
+    </div>`;
+  };
+
+  let rows = '';
+  if (aula.turma === 'Mista') {
+    const adultos = turmaAlunos.filter(a => a.turma === 'Adulto');
+    const kids    = turmaAlunos.filter(a => a.turma === 'Kids');
+    if (adultos.length) rows += `<div style="padding:8px 16px 4px;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;background:var(--dark3)">Adulto</div>` + adultos.map(renderRow).join('');
+    if (kids.length)    rows += `<div style="padding:8px 16px 4px;font-size:11px;font-weight:700;color:#58C4E0;text-transform:uppercase;letter-spacing:1px;background:var(--dark3)">Kids</div>` + kids.map(renderRow).join('');
+  } else {
+    rows = turmaAlunos.map(renderRow).join('');
+  }
+
+  container.innerHTML = `
+    <div class="chamada-bar">
+      <div class="chamada-bar-count"><strong>${countPresentes}</strong> de ${turmaAlunos.length} presentes</div>
+      <button class="chamada-marcar-todos" onclick="marcarTodosChamada(${aulaId}, ${!todosPresentes})">
+        ${todosPresentes ? 'Desmarcar todos' : 'Marcar todos'}
+      </button>
+    </div>
+    ${rows}`;
+}
+
+async function toggleChamada(aulaId, alunoId) {
+  const toggleEl = document.getElementById(`ctoggle_${aulaId}_${alunoId}`);
+  const novoValor = !toggleEl.classList.contains('on');
+
+  const existing = presencas.find(p => p.aluno_id === alunoId && p.aula_id === aulaId);
+  if (existing) {
+    existing.presente = novoValor;
+    await dbPut('presencas', existing);
+  } else {
+    const id = await dbAdd('presencas', {aluno_id: alunoId, aula_id: aulaId, presente: novoValor});
+    presencas.push({id, aluno_id: alunoId, aula_id: aulaId, presente: novoValor});
+  }
+
+  renderChamadaModal(aulaId);
+  if (aulasSelectedDate) renderAulasForDate(aulasSelectedDate);
+  showToast(novoValor ? '✓ Presença registrada' : 'Presença removida');
+}
+
+async function marcarTodosChamada(aulaId, marcar) {
+  const aula = aulas.find(au => au.id === aulaId);
+  if (!aula) return;
+  const turmaAlunos = aula.turma === 'Mista' ? alunos : alunos.filter(a => a.turma === aula.turma);
+  for (const a of turmaAlunos) {
+    const existing = presencas.find(p => p.aluno_id === a.id && p.aula_id === aulaId);
+    if (existing) {
+      existing.presente = marcar;
+      await dbPut('presencas', existing);
+    } else if (marcar) {
+      const id = await dbAdd('presencas', {aluno_id: a.id, aula_id: aulaId, presente: true});
+      presencas.push({id, aluno_id: a.id, aula_id: aulaId, presente: true});
+    }
+  }
+  renderChamadaModal(aulaId);
+  if (aulasSelectedDate) renderAulasForDate(aulasSelectedDate);
+  showToast(marcar ? `✓ ${turmaAlunos.length} alunos marcados` : 'Todos desmarcados');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+// ══════════════════════════════════════════
+// AULAS CALENDAR
+// ══════════════════════════════════════════
+function setAulaTurma(t) {
+  aulaTurma = t;
+  document.getElementById('aulaTurmaAdulto').classList.toggle('active', t==='Adulto');
+  document.getElementById('aulaTurmaKids').classList.toggle('active', t==='Kids');
+  document.getElementById('aulaTurmaMista').classList.toggle('active', t==='Mista');
+}
+
+function aulasCalPrev() { aulasCalDate.setMonth(aulasCalDate.getMonth()-1); renderAulasCal(); }
+function aulasCalNext() { aulasCalDate.setMonth(aulasCalDate.getMonth()+1); renderAulasCal(); }
+
+function renderAulasCal() {
+  const year = aulasCalDate.getFullYear(), month = aulasCalDate.getMonth();
+  document.getElementById('aulasCalTitle').textContent =
+    new Date(year,month,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+
+  const first = new Date(year,month,1).getDay();
+  const days = new Date(year,month+1,0).getDate();
+  const selectedStr = aulasSelectedDate ? aulasSelectedDate : null;
+
+  const aulasInMonth = aulas.filter(au => {
+    const [y,m] = au.data.split('-').map(Number);
+    return y===year && m-1===month;
+  });
+  const datesWithAulas = new Set(aulasInMonth.map(au => au.data));
+
+  const DAYS = ['D','S','T','Q','Q','S','S'];
+  let html = DAYS.map(d => `<div class="cal-dow">${d}</div>`).join('');
+  for (let i=0;i<first;i++) html += '<div class="cal-day empty"></div>';
+  for (let d=1;d<=days;d++) {
+    const ds = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const hasAula = datesWithAulas.has(ds);
+    const isSelected = ds === selectedStr;
+    let cls = 'cal-day';
+    if (isSelected) cls += ' selected-aula';
+    else if (hasAula) cls += ' has-class';
+    html += `<div class="${cls}" onclick="selectAulaDate('${ds}')">${d}</div>`;
+  }
+  document.getElementById('aulasCalGrid').innerHTML = html;
+  if (aulasSelectedDate) renderAulasForDate(aulasSelectedDate);
+}
+
+function selectAulaDate(ds) {
+  aulasSelectedDate = ds;
+  renderAulasCal();
+  document.getElementById('aulasDateSection').style.display = '';
+  const [y,m,d] = ds.split('-');
+  const label = new Date(y,m-1,d).toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('aulasSelectedLabel').textContent = label;
+  document.getElementById('aulasDateTitle').textContent = 'Aulas — ' + new Date(y,m-1,d).toLocaleDateString('pt-BR',{day:'numeric',month:'short'});
+  renderAulasForDate(ds);
+}
+
+function renderAulasForDate(ds) {
+  const dayAulas = aulas.filter(au => au.data === ds).sort((a,b) => a.horario.localeCompare(b.horario));
+  const el = document.getElementById('aulasList');
+  if (!dayAulas.length) {
+    el.innerHTML = `<div class="empty-state" style="padding:16px"><div class="sub">Nenhuma aula cadastrada nesta data</div></div>`;
+    return;
+  }
+  el.innerHTML = dayAulas.map(au => {
+    const turmaAlunos = au.turma === 'Mista'
+      ? alunos
+      : alunos.filter(a => a.turma === au.turma);
+    const presentes = turmaAlunos.filter(a =>
+      presencas.some(p => p.aula_id === au.id && p.aluno_id === a.id && p.presente)
+    ).length;
+    const total = turmaAlunos.length;
+    const dotCls = au.turma === 'Kids' ? ' kids' : au.turma === 'Mista' ? ' mista' : '';
+    return `
+    <div class="aula-item">
+      <div class="aula-dot${dotCls}"></div>
+      <div class="aula-info">
+        <div class="aula-time">${au.horario}</div>
+        <div class="aula-meta">${au.turma} · ${presentes}/${total} presentes</div>
+      </div>
+      <button class="aula-chamada-btn" onclick="abrirChamada(${au.id})">📋 Chamada</button>
+      <button class="aula-delete" onclick="deleteAula(${au.id})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+async function cadastrarAula() {
+  if (!aulasSelectedDate) { showToast('Selecione uma data'); return; }
+  const horario = document.getElementById('aulaHorario').value;
+  const obj = {data: aulasSelectedDate, horario, turma: aulaTurma};
+  const id = await dbAdd('aulas', obj);
+  obj.id = id;
+  aulas.push(obj);
+  renderAulasForDate(aulasSelectedDate);
+  renderAulasCal();
+  showToast(`✓ Aula ${horario} (${aulaTurma}) cadastrada`);
+}
+
+async function deleteAula(id) {
+  if (!confirm('Remover esta aula? As presenças associadas serão mantidas.')) return;
+  await dbDelete('aulas', id);
+  aulas = aulas.filter(a => a.id !== id);
+  renderAulasForDate(aulasSelectedDate);
+  renderAulasCal();
+  showToast('Aula removida');
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function toDateStr(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+async function init() {
+  await initDB();
+  alunos = await dbGetAll('alunos');
+  aulas = await dbGetAll('aulas');
+  presencas = await dbGetAll('presencas');
+  renderDash();
+}
+
+init();
+</script>
+</body>
+</html>
